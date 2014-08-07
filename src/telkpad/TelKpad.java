@@ -2,7 +2,7 @@ package telkpad;
 import java.util.Scanner;
 
 /**
- *
+ * Java code that simulates a telephone keybad. Based on this reddit daily challenge: http://goo.gl/SdX0Z4
  * @author todyerutz @ plainintricacy.wordpress.com
  */
 public class TelKpad {
