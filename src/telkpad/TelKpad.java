@@ -3,17 +3,15 @@ import java.util.Scanner;
 /**
  *
  * @author todyertuz @ plainintricacy.wordpress.com
- * Java code that simulates a telephone keypad.
+ * Java code that simulates a reverse telephone keypad (takes a word or sentence, and returns the appropriate keypad number sequence).
  * Based on this reddit daily challenge: http://goo.gl/SdX0Z4
  */
 public class TelKpad {
     
-    public static String alphabet = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
-    
     public static void main(String[] args) {
     
         Scanner input = new Scanner(System.in);
-        System.out.println("Please enter your numbers");
+        System.out.println("Please enter your sentence:");
         String in = input.nextLine();
         input.close();
         
@@ -27,60 +25,20 @@ public class TelKpad {
         kpad[6] = "TUV";
         kpad[7] = "WXYZ";
         
-        if(isValidInput(in)){
-        String[] numbers = in.split(" ");
-        int[] nums = new int[numbers.length];
-        for(int i=0; i<numbers.length; i++){
-            if(isValidNumber(Integer.parseInt(numbers[i]))){
-                nums[i] = Integer.parseInt(numbers[i]);
-            }
-        }
-        for(int i=0; i<nums.length; i++){
-            System.out.println(nums[i]);
-        }
-        for(int i=0; i<nums.length; i++){
-            if(nums[i]!=0){
-                if(numsize(nums[i])>kpad[nums[i]%10-2].length()){
-                    System.out.print(kpad[nums[i]%10-2].charAt(numsize(nums[i])-(kpad[nums[i]%10-2].length())-1));
-                }else{
-                    System.out.print(kpad[nums[i]%10-2].charAt(numsize(nums[i])-1));
+        String[] words = in.toUpperCase().split(" ");
+        
+        System.out.println("Conversion complete:");
+        for(int i=0; i<words.length; i++){
+            for(int j=0; j<words[i].length(); j++){
+                for(int q=0; q<kpad.length; q++){
+                    if(kpad[q].indexOf(words[i].charAt(j))>=0){
+                        for(int z=0; z<=kpad[q].indexOf(words[i].charAt(j)); z++){
+                            System.out.print(q+2);                            
+                        }
+                        System.out.print(" ");
+                    }
                 }
             }
         }
-        System.out.println("");
-    }else System.out.println("Invalid input");
-    }
-    
-    public static boolean isValidInput(String q){
-        String[] letters = alphabet.split(" ");
-        for(int i=0; i<letters.length; i++){
-            if(q.contains(letters[i])){
-                return false;
-            }
-        }
-        return true;
-    }
-     
-    public static boolean isValidNumber(int x){
-        int q=x%10;
-        if(q==1||q==0){
-            return false;
-        }
-        while(x>0){
-            if(x%10!=q){
-                return false;
-            }
-            x/=10;
-        }
-        return true;
-    }
-    
-    public static int numsize(int q){
-        int x=0;
-        while(q>0){
-            x++;
-            q/=10;
-        }
-        return x;
     }
 }
