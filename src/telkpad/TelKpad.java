@@ -1,21 +1,23 @@
 package telkpad;
 import java.util.Scanner;
+import java.io.*;
 /**
  *
  * @author todyertuz @ plainintricacy.wordpress.com
- * Java code that simulates a telephone keypad.
+ * Java code that simulates a telephone keypad with AutoComplete function.
  * Based on this reddit daily challenge: http://goo.gl/SdX0Z4
  */
 public class TelKpad {
     
     public static String alphabet = "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z";
     
-    public static void main(String[] args) {
+    public static void main(String[] args) throws FileNotFoundException, IOException {
     
         Scanner input = new Scanner(System.in);
         System.out.println("Please enter your numbers");
         String in = input.nextLine();
         input.close();
+        String output = new String();
         
         String[] kpad = new String[8];
         kpad[0] = "ABC";
@@ -36,18 +38,34 @@ public class TelKpad {
             }
         }
         for(int i=0; i<nums.length; i++){
-            System.out.println(nums[i]);
-        }
-        for(int i=0; i<nums.length; i++){
             if(nums[i]!=0){
                 if(numsize(nums[i])>kpad[nums[i]%10-2].length()){
-                    System.out.print(kpad[nums[i]%10-2].charAt(numsize(nums[i])-(kpad[nums[i]%10-2].length())-1));
+                    output+=kpad[nums[i]%10-2].charAt(numsize(nums[i])-(kpad[nums[i]%10-2].length())-1);
                 }else{
-                    System.out.print(kpad[nums[i]%10-2].charAt(numsize(nums[i])-1));
+                    output+=kpad[nums[i]%10-2].charAt(numsize(nums[i])-1);
                 }
             }
         }
-        System.out.println("");
+        if(output!=null){
+            System.out.println(output.toLowerCase());
+            System.out.println("AutoComplete suggestions:");
+            System.out.println("----------------------------------------");
+            String word = new String();
+            FileInputStream dictionary = new FileInputStream("C:/Users/Irukandji/Documents/NetBeansProjects/TelKPad/src/telkpad/brit-a-z.txt");
+            BufferedReader dictreader = new BufferedReader(new InputStreamReader(dictionary));
+            word = dictreader.readLine();
+            while(word!=null){
+                if(word.startsWith(output.toLowerCase())){
+                    System.out.println(word);
+                }
+                word=dictreader.readLine();
+            }
+            dictionary.close();
+            dictreader.close();
+        }else{
+            System.out.println("This should never happen.");
+        }            
+        System.out.println("----------------------------------------");
     }else System.out.println("Invalid input");
     }
     
